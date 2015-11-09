@@ -1,7 +1,11 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+var food = function(pName,pValue){
+    this.name = pName;
+    this.value = pValue;
+}
+var location = function(){
+    
+}
+var body = function(){}
+var snake = function(){}
 
 
