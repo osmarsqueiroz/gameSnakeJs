@@ -1,11 +1,37 @@
-var food = function(pName,pValue){
-    this.name = pName;
-    this.value = pValue;
+/*
+ 
+ A cobra come a comida e isso se converte em seu corpo
+ Nao pode colidir com seu proprio corpo
+ 
+ */
+
+var Comida = function (pNome, pValor) {
+    this.nome = pNome;
+    this.valor = pValor;
 }
-var location = function(){
-    
+var Localizacao = function (pComida) {
+    this.comida = pComida || null;
 }
-var body = function(){}
-var snake = function(){}
+
+var Corpo = function () {
+
+}
+var Cobra = function () {
+    this.lCorpo = [];
+    this.valor = 0;
+}
+
+
+
+var ManipularCobra = {
+    adicionarComida: function (pCobra, pComida) {
+        pCobra.lCorpo.push(pComida);
+        return pCobra;
+    },
+    verificarTamanhoCobra: function(pCobra){
+        return pCobra.lCorpo.length;
+    }
+}
+
 
 
