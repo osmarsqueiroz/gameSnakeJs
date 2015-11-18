@@ -41,7 +41,8 @@
 
 body{
     font-size: 100%;
-    background-color: #E4E9F5;
+    background: url('../image/bg.png');
+    
 }
 canvas{
     border:2px solid #000;

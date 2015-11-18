@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Game Snake - build new year</title>
+        <title>Jogo da Cobrinha</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link  href="css/style.css" media="all" rel="stylesheet" />
@@ -9,41 +9,49 @@
     </head>
     <body>
         <div id="master">
-            <h1>Cobrinha usando canvas (modo auto)</h1>
-            <p>Este jogo foi criado usando JavaScript e HTML5</p>
-            <br>
-            <p>Posição da cabeça: <strong id="testeX"></strong></p>
-            <p>Pontos: <strong id="meusPontos"></strong></p>
-            
-            <canvas id="myCanvas" width="600" height="400"></canvas>
-            
+            <h1>Jogo da Cobrinha</h1>
+            <h2>Este jogo foi criado usando JavaScript e Canvas(HTML5)</h2>
+
+            <canvas id="myCanvas" width="600" height="400"></canvas>            
             <div class="info">
-                <h5>Estrutura do jogo</h5>
+                <h5>Regras da estrutura</h5>
                 <ul>
-                    <li>Pode sair da area limitada do mapa <img src="image/error.png"></li>
-                    <li>A comida fica por 2 segundos no mapa e aparece em outro local <img src="image/error.png"></li>
-                    <li>O tamanho do mapa pode ser customizado <img src="image/error.png"></li>
-                    <li>Cada comida tem seu valor  <img src="image/error.png"></li>
-                    <li>O valor da comida só é alterado quando a cobra comer  <img src="image/error.png"></li>
+                    <li>Criar classes do projeto <ul>
+                            <li>Criar classe Cobra <img src="image/error.png"></li>
+                            <li>Criar classe Corpo <img src="image/error.png"></li>
+                            <li>Criar classe Comida <img src="image/error.png"></li>
+                            <li>Criar classe Bonus <img src="image/error.png"></li>
+                            <li>Criar classe Mapa <img src="image/error.png"></li>
+                        </ul></li>
+                    <li>Detalhe classe Cobra
+                        <ul>
+                            <li>Quando a Cobra se alimenta com Comida, o alimento alonga o corpo <img src="image/error.png"></li>
+                            <li>Quando a Cobra se alimenta com Bonus, algo positivo que favorece (Score,Tamanho,etc) <img src="image/error.png"></li>
+                            <li>Quando a Cobra movimenta pelo cenario ela pode morrer quando:
+                                <ul>
+                                    <li>Choca na parede <img src="image/error.png"></li>
+                                    <li>Choca nos limites do cenario <img src="image/error.png"></li>
+                                    <li>Choca no corpo <img src="image/error.png"></li>
+                                    <li>Choca em outras cobras <img src="image/error.png"></li>
+                                </ul></li>
+                        </ul></li>
+                    <li>Detalhe classe Comida<ul>
+                            <li>A Comida faz a Cobra ganhar mais Corpo <img src="image/error.png"></li>
+                            <li>A Comida pode adicionar apenas 1 corpo <img src="image/error.png"></li>
+                            <li>Cada Comida deve ter um timer para aparecer em tela, mas isso não deve ser responsabilidade da comida<img src="image/error.png"></li>
+                            <li><img src="image/error.png"></li>
+                        </ul>
+                    </li>
                 </ul>
-            </div>
-            <div class="info">
-                <h5>Inteligência da cobrinha</h5>
-                <ul>
-                    <li>Querer sempre comer  <img src="image/error.png"></li>
-                    <li>Não atropelar o proprio corpo <img src="image/error.png"></li>
-                    <li>Verifica se existe algum objeto que atrapalhe o andamento <img src="image/error.png"></li>
-                    <li>Verifica se existe algum bonus na tela <img src="image/error.png"></li>
-                    <li>Verifica quem esta mais proximo a comida ou bonus <img src="image/error.png"></li>
-                </ul>
+                
             </div>
         </div>
         <script src="script/estrutura.js"></script>
         <script src="script/init.js"></script>
-         <script type="text/javascript">
+        <script type="text/javascript">
 
-            window.onload = function() {
-                
+            window.onload = function () {
+
             }
 
         </script>
