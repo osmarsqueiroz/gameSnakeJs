@@ -14,9 +14,13 @@ var Localizacao = function (pComida) {
 }
 
 var Movimentacao = function (oCobra) {
-    this.cobra = oCobra || null;
-    this.posicaoX = 0;
-    this.posicaoY = 0;
+    this.cobra = oCobra || null,
+            
+    this.posicaoX = 0,
+    this.posicaoY = 0,
+    
+    this.direcaoX = 0,/* -1 0 +1*/ 
+    this.direcaoY = 0/* -1 0 +1*/ 
 }
 
 var Corpo = function () {
