@@ -1,55 +1,55 @@
-/*
- 
- A cobra come a comida e isso se converte em seu corpo
- Nao pode colidir com seu proprio corpo
- 
- */
-
-var Comida = function (pNome, pValor) {
+var Comida = function (pNome) {
     this.nome = pNome;
-    this.valor = pValor;
-}
-var Localizacao = function (pComida) {
-    this.comida = pComida || null;
-}
+    this.posicao = null;
+};
 
-var Movimentacao = function (oCobra) {
-    this.cobra = oCobra || null,
-            
-    this.posicaoX = 0,
-    this.posicaoY = 0,
-    
-    this.direcaoX = 0,/* -1 0 +1*/ 
-    this.direcaoY = 0/* -1 0 +1*/ 
-}
+var Posicao = function (posicao_x, posicao_y) {
+    this.x = posicao_x || 0;
+    this.y = posicao_y || 0;
+};
 
+var Direcao = function (direcao_x, direcao_y) {
+    this.x = direcao_x || 0; /* -1 0 +1*/
+    this.y = direcao_y || 0;/* -1 0 +1*/
+};
+
+var Segmento = function () {
+    this.posicao = null;
+    this.direcao = null;
+};
 var Corpo = function () {
-
-}
-var Cobra = function () {
-    this.lCorpo = [];
+    this.lSegmento = [];
     this.valor = 0;
-}
+};
 
-var ManipularMovimentacaoCobra = {
-    cenarioX: 0,
-    cenarioY: 0,
-    cenarioTamanhoX: 0,
-    cenarioTamanhoY: 0,
-    verificarColisaoMapa: function () {
-
+var MonipularCorpo = {
+    adicionarSegmento: function (pCorpo, pSegmento) {
+        pCorpo.lSegmento.push(pSegmento);
+        return pCorpo;
     }
-}
+};
 
-var ManipularCobra = {
-    adicionarComida: function (pCobra, pComida) {
-        pCobra.lCorpo.push(pComida);
-        return pCobra;
+var ManipularPosicao = {
+    adicionarPosicao: function (pObjeto, pPosicao) {
+        pObjeto.posicao = pPosicao;
+        return pObjeto;
+    }
+};
+var ManipularDirecao = {
+    adicionarDirecao: function (pSegmento, pDirecao) {
+        pSegmento.direcao = pDirecao;
+        return pSegmento;
+    }    
+};
+
+var ManipularCorpo = {
+    adicionarSegmento: function (pCorpo, pSegmento) {
+        pCorpo.lSegmento.push(pSegmento);
+        return pCorpo;
     },
-    verificarTamanhoCobra: function (pCobra) {
-        return pCobra.lCorpo.length;
-    },
-}
-
-
+    totalSegmento: function (pCorpo) {
+        return pCorpo.lSegmento.length;
+    }
+    //adicionar mais segnemtos, calcular nova posicao dos segmentos, mudar direcao dos segmentos a cada movimento
+};
 
