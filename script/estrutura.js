@@ -19,7 +19,8 @@ var Segmento = function () {
 };
 var Corpo = function () {
     this.lSegmento = [];
-    this.valor = 0;
+    this.direcao = null;
+
 };
 
 var MonipularCorpo = {
@@ -60,31 +61,34 @@ var ManipularCorpo = {
         return pCorpo.lSegmento.length;
     },
     adicionarComidaCorpo: function (pCorpo, pComida) {
-//precisa adicionara ultima posicao do array
         var tmp_segmento = new Segmento();
-        tmp_segmento = ManipularPosicao.adicionarPosicao(tmp_segmento,pComida.posicao)
-
-        pCorpo = ManipularCorpo.adicionarSegmento(pCorpo,tmp_segmento);
+        tmp_segmento = ManipularPosicao.adicionarPosicao(tmp_segmento, pComida.posicao)
+        pCorpo = ManipularCorpo.adicionarSegmento(pCorpo, tmp_segmento);
         return pCorpo;
     },
     processarDirecao: function (pCorpo) {
 
         var lista = pCorpo.lSegmento;
-        var total = lista.length;
-        for (var i = total; i > 0; i--) {
-            var ponteiro = 0;
-            if (i > 0) {
-                ponteiro = i--;
+        var total = lista.length - 1;
+
+        for (var i = total; i >= 0; i--) {
+            var ponteiro = i - 1;
+            var direcao = null;
+            if (typeof lista[ponteiro] !== "undefined") {
+                direcao = lista[ponteiro].direcao;
+            }
+            if (direcao == null) {
+                direcao = pCorpo.direcao;
             }
 
-            var direcao = lista[ponteiro].direcao;
             var posicao = lista[i].posicao;
 
             posicao.x = posicao.x + (direcao.x);
             posicao.y = posicao.y + (direcao.y);
 
-            lista[i].direcao = lista[ponteiro].direcao;
+            lista[i].direcao = direcao;
             lista[i].posicao = posicao;
+
         }
         pCorpo.lSegmento = lista;
         return pCorpo;
