@@ -50,19 +50,20 @@ QUnit.test("Segmento adicionando direcaoSegmento", function (assert) {
     assert.equal(segmento.direcao.y, 0, "Direcao Y 0");
 
 });
-    segmento = ManipularPosicao.adicionarPosicao(segmento, posicaoSegmento);
-    segmento = ManipularDirecao.adicionarDirecao(segmento, direcaoSegmento);
-    corpo = ManipularCorpo.adicionarSegmento(corpo, segmento);
+
+//    corpo = ManipularCorpo.adicionarSegmento(corpo, segmento);
 QUnit.test("Corpo adicionando segmento", function (assert) {
 
-
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, comidaPera);
     assert.equal(typeof corpo.lSegmento, "object", "object de segmentos");
     assert.equal(ManipularCorpo.totalSegmento(corpo), 1, "Total Segmento 1");
 
 });
-   corpo = ManipularCorpo.adicionarComidaCorpo(corpo,comidaPera);
+
 QUnit.test("Corpo com segmentos", function (assert) {
 
-    console.log(corpo);
-    assert.equal(ManipularCorpo.totalSegmento(corpo),3, "Total Segmento 3");
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, comidaPera);
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, comidaPera);
+    assert.equal(ManipularCorpo.totalSegmento(corpo), 3, "Total Segmento 3");
+    
 });

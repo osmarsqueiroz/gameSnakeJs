@@ -61,8 +61,9 @@ var ManipularCorpo = {
     },
     adicionarComidaCorpo: function (pCorpo, pComida) {
 //precisa adicionara ultima posicao do array
-        var tmp_segmento = new Segmento(pComida.posicao.x, pComida.posicao.y);
-        console.log(tmp_segmento)
+        var tmp_segmento = new Segmento();
+        tmp_segmento = ManipularPosicao.adicionarPosicao(tmp_segmento,pComida.posicao)
+
         pCorpo = ManipularCorpo.adicionarSegmento(pCorpo,tmp_segmento);
         return pCorpo;
     },
