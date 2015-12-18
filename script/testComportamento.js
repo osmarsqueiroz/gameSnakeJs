@@ -1,8 +1,4 @@
-var corpo = new Corpo();
-corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(1, 0));
 
-corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 2, 1));
-corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("farofa", 1, 1));
 
 QUnit.test("Lista com 2 segmentos", function (assert) {
     var corpo = new Corpo();
@@ -89,4 +85,59 @@ QUnit.test("Lista com 2 segmentos movendo 2 passo direcao baixo", function (asse
 
     assert.equal(corpo.lSegmento[1].posicao.x, 3, "Segmento 1 Posicao X = 3");
     assert.equal(corpo.lSegmento[1].posicao.y, 3, "Segmento 1 Posicao Y = 3");
+});
+QUnit.test("Colisao com o corpo, ele perde", function (assert) {
+    var corpo = new Corpo();
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(1, 0));
+
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 6, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 5, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 4, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 3, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 2, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("farofa", 1, 4));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+     
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(0, 1));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+    
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(-1, 0));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+    
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(0, -1));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+   
+    assert.equal(Colisor.checarColisaoCorpo(corpo), true, "Colidiu");
+});
+QUnit.test("Colisao do corpo com a comida", function (assert) {
+    var corpo = new Corpo();
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(1, 0));
+
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 6, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 5, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 4, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 3, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 2, 4));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("farofa", 1, 4));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+     
+    var comida = MonipularComida.criarComida("feijao", 8, 4);   
+    assert.equal(Colisor.checarColisaoComida(corpo,comida), false, "não Colidiu");
+    corpo = ManipularCorpo.processarDirecao(corpo);
+    assert.equal(Colisor.checarColisaoComida(corpo,comida), true, "Colidiu");
+});
+
+QUnit.test("Colisao do corpo com o cenario", function (assert) {
+    var corpo = new Corpo();
+    corpo = ManipularDirecao.adicionarDirecao(corpo, new Direcao(1, 0));
+
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("feijao", 8, 1));
+    corpo = ManipularCorpo.adicionarComidaCorpo(corpo, MonipularComida.criarComida("farofa", 7, 1));
+    corpo = ManipularCorpo.processarDirecao(corpo);
+         
+//    var comida = MonipularComida.criarComida("feijao", 8, 4);   
+    assert.equal(Colisor.checarColisaoMapa(corpo,0,0,10,10), false, "não Colidiu");
+    corpo = ManipularCorpo.processarDirecao(corpo);
+    console.log(corpo.lSegmento);
+    assert.equal(Colisor.checarColisaoMapa(corpo,0,0,10,10), true, "Colidiu");
 });

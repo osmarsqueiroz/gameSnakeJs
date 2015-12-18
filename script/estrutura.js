@@ -96,46 +96,43 @@ var ManipularCorpo = {
     //adicionar mais segnemtos, calcular nova posicao dos segmentos, mudar direcao dos segmentos a cada movimento
 };
 var Colisor = {
-    checarColisaoCorpo:function(pCorpo){
+    checarColisaoCorpo: function (pCorpo) {
         var lista = pCorpo.lSegmento;
         var tamanho = lista.length;
-        if(tamanho > 1){
+        if (tamanho > 1) {
             var elementoBase = lista[0];
-            for(var i = 1;i<tamanho;i++){
-                if(lista[i].posicao.x == elementoBase.posicao.x && lista[i].posicao.y == elementoBase.posicao.y){
+            for (var i = 1; i < tamanho; i++) {
+                if (lista[i].posicao.x == elementoBase.posicao.x && lista[i].posicao.y == elementoBase.posicao.y) {
                     return true;
                 }
             }
         }
         return false;
-        
+
     },
-    checarColisaoMapa:function(pCorpo,min_x,min_y,width,height){
+    checarColisaoMapa: function (pCorpo, min_x, min_y, width, height) {
         var elementoBase = pCorpo.lSegmento[0];
-        
-        var max_x = min_x+width;
-        var max_y = min_y+height;
-        
-        if(
-                min_x >= elementoBase.posicao.x &&
-                elementoBase.posicao.x <= max_x 
-                ( min_y <= elementoBase.posicao.y ||
-                  max_y >= elementoBase.posicao.y)
-                ){
-            return true
+
+        var max_x = min_x + width;
+        var max_y = min_y + height;
+
+        if (min_x >= elementoBase.posicao.x && elementoBase.posicao.x <= max_x
+           (min_y <= elementoBase.posicao.y || max_y >= elementoBase.posicao.y)) {
+            return true;
         }
-        if(
-                min_y >= elementoBase.posicao.y &&
-                elementoBase.posicao.y <= max_y 
-                ( min_x <= elementoBase.posicao.x ||
-                  max_x >= elementoBase.posicao.x)
-                ){
-            return true
+        if (min_y >= elementoBase.posicao.y && elementoBase.posicao.y <= max_y
+            (min_x <= elementoBase.posicao.x || max_x >= elementoBase.posicao.x)){
+            return true;
         }
         return false;
     },
-    checarColisaoComida:function(pCorpo,lComida){
-        
+    checarColisaoComida: function (pCorpo, lComida) {
+        var elementoBase = pCorpo.lSegmento[0];
+        if (lComida.posicao.x == elementoBase.posicao.x &&
+                lComida.posicao.y == elementoBase.posicao.y) {
+            return true;
+        }
+        return false;
     }
 }
 
