@@ -12,7 +12,8 @@
             <h1>Jogo da Cobrinha</h1>
             <h2>Este jogo foi criado usando JavaScript e Canvas(HTML5)</h2>
 
-            <canvas id="myCanvas" width="600" height="400"></canvas>            
+            <canvas id="myCanvas" width="700" height="600"></canvas>   
+            <img id="imgDepre">
             <div class="info">
                 <h5>Regras da estrutura</h5>
                 <ul>
@@ -43,15 +44,82 @@
                         </ul>
                     </li>
                 </ul>
-                
+
             </div>
         </div>
         <script src="script/estrutura.js"></script>
         <script src="script/init.js"></script>
         <script type="text/javascript">
+            window.requestAnimFrame = (function (callback) {
 
+                return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+                        function (callback) {
+                            window.setTimeout(callback, 1000 / 60);
+                        };
+            })();
+            var ativarfiltro = true;
+            window.addEventListener("keydown",
+                    function (e) {
+                        if (ativarfiltro) {
+                            switch (e.keyCode) {
+                                case 37:
+                                case 39:
+                                case 38:
+                                case 40: // Arrow keys
+                                case 32:
+                                    e.preventDefault();
+                                    break;
+                                default:
+                                    break; // do not block other keys
+                            }
+                        }
+                    },
+                    false);
+            window.onkeydown = function (e) {
+             //   console.log(e.keyCode)
+                switch (e.keyCode) {
+                    case 37:
+                    case 39:
+                    case 38:
+                    case 40: // Arrow keys
+                        var direcao = Processamento.padronizaInteracaoTeclado(e.keyCode);
+                        Processamento.movimentacaoCursor(direcao);
+                        break;
+                    default:
+                        break; // do not block other keys
+                }
+            };
+            var requestId = null;
+            var gerenciadorAnimacao = null;
             window.onload = function () {
+                Cenario.definirMapa("myCanvas");
+//                Cenario.desenharLinhasMapa();
+                Processamento.iniciar(5,5);
+                Cenario.desenharLinhasMapa();
 
+                var time = null;
+                var gerenciadorAnimacao = function (timestamp) {
+                    if (time == null) {
+                        time = timestamp;
+                    }
+                    
+                    if (timestamp - time > Processamento.getVelocidade()) {
+                        Processamento.gerenciadorAnimacao();
+                        if(Processamento.perdeu){
+                            stop();
+                            return false;
+                        }
+                        time = timestamp;
+                    }
+                    requestId = window.requestAnimationFrame(gerenciadorAnimacao);
+                }
+                gerenciadorAnimacao();
+            }
+            function stop() {
+                if (requestId) {
+                    window.cancelAnimationFrame(requestId);
+                    requestId = undefined;
+                }
             }
 
         </script>

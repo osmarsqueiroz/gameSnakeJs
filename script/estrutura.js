@@ -23,13 +23,6 @@ var Corpo = function () {
 
 };
 
-var MonipularCorpo = {
-    adicionarSegmento: function (pCorpo, pSegmento) {
-        pCorpo.lSegmento.push(pSegmento);
-        return pCorpo;
-    }
-};
-
 var MonipularComida = {
     criarComida: function (nome, posicao_x, posicao_y) {
         var comida = new Comida(nome);
@@ -46,16 +39,109 @@ var ManipularPosicao = {
     }
 };
 var ManipularDirecao = {
+    adicionarDirecaoDetalhada: function (pSegmento, x, y) {
+        pSegmento = ManipularDirecao.adicionarDirecao(pSegmento, new Direcao(x, y))
+        return pSegmento;
+    },
     adicionarDirecao: function (pSegmento, pDirecao) {
         pSegmento.direcao = pDirecao;
         return pSegmento;
+    },
+    inverterDirecao: function (pSegmento) {
+        var direcao = pSegmento.direcao;
+        if (direcao.x != 0) {
+            direcao.x = direcao.x * (-1);
+        }
+
+        if (direcao.y != 0) {
+            direcao.y = direcao.y * (-1);
+        }
+        pSegmento.direcao = direcao;
+        return pSegmento;
+    },
+    validarDirecao: function (pSegmento, direcao_x, direcao_y) {
+        var base_x = pSegmento.direcao.x;
+        var base_y = pSegmento.direcao.y;
+        /*
+         * x 1 != -1
+         * x -1 != 1
+         */
+
+        if (direcao_x != 0 && base_y != 0) {
+            if (direcao_x == 1 && base_x == 0 ||
+                    direcao_x == -1 && base_x == 0 ||
+                    direcao_x == 0 && base_x == 0
+
+                    ) {
+                return true;
+            }
+        }
+        if (direcao_y != 0 && base_x != 0) {
+            if (direcao_y == 1 && base_y == 0 ||
+                    direcao_y == -1 && base_y == 0 ||
+                    direcao_y == 0 && base_y == 0
+                    ) {
+                return true;
+            }
+        }
+
+        return false;
+
+    },
+    processarDirecaoSegmento: function (segmento) {
+
+        var posicao = segmento.posicao;
+        var direcao = segmento.direcao;
+
+        posicao.x = posicao.x + (direcao.x);
+        posicao.y = posicao.y + (direcao.y);
+
+        segmento.direcao = direcao;
+        segmento.posicao = posicao;
+
+        return segmento;
     }
 };
 
 var ManipularCorpo = {
     adicionarSegmento: function (pCorpo, pSegmento) {
+        if (pSegmento.direcao == null) {
+            pSegmento.direcao = pCorpo.direcao;
+        }
         pCorpo.lSegmento.push(pSegmento);
         return pCorpo;
+    },
+    adicionarUltimoSegmento: function (pCorpo) {
+        var final = pCorpo.lSegmento.length - 1;
+        
+        if (final >= 0) {
+            var posicao_x = pCorpo.lSegmento[final].posicao.x;
+            var posicao_y = pCorpo.lSegmento[final].posicao.y;
+            var direcao_x = pCorpo.lSegmento[final].direcao.x;
+            var direcao_y = pCorpo.lSegmento[final].direcao.y;
+
+            var tmp_segmento = new Segmento();
+            tmp_segmento = ManipularDirecao.adicionarDirecao(tmp_segmento, new Direcao(direcao_x, direcao_y));
+            tmp_segmento = ManipularPosicao.adicionarPosicao(tmp_segmento, new Posicao(posicao_x, posicao_y));
+
+            var tmp_segmento = ManipularCorpo.processarInversao(tmp_segmento);
+            pCorpo = ManipularCorpo.adicionarSegmento(pCorpo, tmp_segmento);
+        }
+        return pCorpo;
+    },
+    processarInversao: function (pSegmento) {
+
+        pSegmento = ManipularDirecao.inverterDirecao(pSegmento);
+        pSegmento = ManipularDirecao.processarDirecaoSegmento(pSegmento);
+        pSegmento = ManipularDirecao.inverterDirecao(pSegmento);
+
+        return pSegmento;
+        // pCorpo = ManipularCorpo.adicionarSegmento(pCorpo, temp_segmento);
+    },
+    criarSegmento: function (posicao_x, posicao_y) {
+        var temp_segmento = new Segmento();
+        temp_segmento = ManipularPosicao.adicionarPosicao(temp_segmento, new Posicao(posicao_x, posicao_y));
+        return temp_segmento;
     },
     totalSegmento: function (pCorpo) {
         return pCorpo.lSegmento.length;
@@ -81,14 +167,8 @@ var ManipularCorpo = {
                 direcao = pCorpo.direcao;
             }
 
-            var posicao = lista[i].posicao;
-
-            posicao.x = posicao.x + (direcao.x);
-            posicao.y = posicao.y + (direcao.y);
-
             lista[i].direcao = direcao;
-            lista[i].posicao = posicao;
-
+            lista[i] = ManipularDirecao.processarDirecaoSegmento(lista[i]);
         }
         pCorpo.lSegmento = lista;
         return pCorpo;
@@ -108,29 +188,38 @@ var Colisor = {
             }
         }
         return false;
-
     },
     checarColisaoMapa: function (pCorpo, min_x, min_y, width, height) {
         var elementoBase = pCorpo.lSegmento[0];
+        var max_x = min_x + width-1;
+        var max_y = min_y + height-1;
 
-        var max_x = min_x + width;
-        var max_y = min_y + height;
-
-        if (min_x >= elementoBase.posicao.x && elementoBase.posicao.x <= max_x
-           (min_y <= elementoBase.posicao.y || max_y >= elementoBase.posicao.y)) {
+        if ((min_x > elementoBase.posicao.x || elementoBase.posicao.x > max_x) &&
+                (elementoBase.posicao.y >= min_y && elementoBase.posicao.y <= max_y)) {
             return true;
         }
-        if (min_y >= elementoBase.posicao.y && elementoBase.posicao.y <= max_y
-            (min_x <= elementoBase.posicao.x || max_x >= elementoBase.posicao.x)){
+        if ((min_y > elementoBase.posicao.y || elementoBase.posicao.y > max_y) &&
+                (elementoBase.posicao.x >= min_x && elementoBase.posicao.x <= max_x)) {
             return true;
         }
         return false;
     },
-    checarColisaoComida: function (pCorpo, lComida) {
+    checarColisaoComida: function (pCorpo, pComida) {
         var elementoBase = pCorpo.lSegmento[0];
-        if (lComida.posicao.x == elementoBase.posicao.x &&
-                lComida.posicao.y == elementoBase.posicao.y) {
+        if (pComida.posicao.x == elementoBase.posicao.x &&
+                pComida.posicao.y == elementoBase.posicao.y) {
             return true;
+        }
+        return false;
+    },
+    checarColisaoComidaCorpo: function (pCorpo, pComida) {
+
+        for (var i in pCorpo.lSegmento) {
+            var elementoBase = pCorpo.lSegmento[i];
+            if (pComida.posicao.x == elementoBase.posicao.x &&
+                    pComida.posicao.y == elementoBase.posicao.y) {
+                return true;
+            }
         }
         return false;
     }
