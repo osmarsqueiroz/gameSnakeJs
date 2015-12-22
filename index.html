@@ -3,7 +3,9 @@
     <head>
         <title>Jogo da Cobrinha</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="O Jogo da Cobrinha é um classico, escrito em html5 e javascript com canvas usando SOLID">
+        <meta name="keywords" content="cobrinha,html5,Javascript,SOLID,jogo">
+        <meta name="author" content="Osmar Queiroz">
         <link  href="css/style.css" media="all" rel="stylesheet" />
 
     </head>
@@ -12,39 +14,46 @@
             <h1>Jogo da Cobrinha</h1>
             <h2>Este jogo foi criado usando JavaScript e Canvas(HTML5)</h2>
 
-            <canvas id="myCanvas" width="700" height="600"></canvas>   
-            <img id="imgDepre">
+            <canvas id="myCanvas" width="650" height="550"></canvas>   
+            
             <div class="info">
-                <h5>Regras da estrutura</h5>
+                
+                <h4>Movimentação</h4>
+                <p>Use as setas do teclado e a barra de espaço é a pausa</p>
+                <h4>Regras da estrutura</h4>
                 <ul>
                     <li>Criar classes do projeto <ul>
-                            <li>Criar classe Cobra <img src="image/error.png"></li>
-                            <li>Criar classe Corpo <img src="image/error.png"></li>
-                            <li>Criar classe Comida <img src="image/error.png"></li>
-                            <li>Criar classe Bonus <img src="image/error.png"></li>
-                            <li>Criar classe Mapa <img src="image/error.png"></li>
+                            <li>Criar classe Cobra <img src="image/success.png"></li>
+                            <li>Criar classe Corpo <img src="image/success.png"></li>
+                            <li>Criar classe Comida <img src="image/success.png"></li>
+                            <li>Criar classe Mapa <img src="image/success.png"></li>
                         </ul></li>
                     <li>Detalhe classe Cobra
                         <ul>
-                            <li>Quando a Cobra se alimenta com Comida, o alimento alonga o corpo <img src="image/error.png"></li>
-                            <li>Quando a Cobra se alimenta com Bonus, algo positivo que favorece (Score,Tamanho,etc) <img src="image/error.png"></li>
+                            <li>Quando a Cobra se alimenta com Comida, o alimento alonga o corpo <img src="image/success.png"></li>
                             <li>Quando a Cobra movimenta pelo cenario ela pode morrer quando:
                                 <ul>
-                                    <li>Choca na parede <img src="image/error.png"></li>
-                                    <li>Choca nos limites do cenario <img src="image/error.png"></li>
-                                    <li>Choca no corpo <img src="image/error.png"></li>
-                                    <li>Choca em outras cobras <img src="image/error.png"></li>
+                                    <li>Choca na parede <img src="image/success.png"></li>
+                                    <li>Choca nos limites do cenario <img src="image/success.png"></li>
+                                    <li>Choca no corpo <img src="image/success.png"></li>
                                 </ul></li>
                         </ul></li>
                     <li>Detalhe classe Comida<ul>
-                            <li>A Comida faz a Cobra ganhar mais Corpo <img src="image/error.png"></li>
-                            <li>A Comida pode adicionar apenas 1 corpo <img src="image/error.png"></li>
-                            <li>Cada Comida deve ter um timer para aparecer em tela, mas isso não deve ser responsabilidade da comida<img src="image/error.png"></li>
-                            <li><img src="image/error.png"></li>
+                            <li>A Comida faz a Cobra ganhar mais Corpo <img src="image/success.png"></li>
+                            <li>A Comida pode adicionar apenas 1 corpo <img src="image/success.png"></li>
+                            <li>Cada Comida deve ter um timer para aparecer em tela, mas isso não deve ser responsabilidade da comida<img src="image/success.png"></li>
+
                         </ul>
                     </li>
                 </ul>
-
+                <h3>Projetos de teste</h3>
+                <ul>
+                    <li><a href="/cobrinha">Cobrinha</a></li>
+                    <li><a href="/bolinha">Bolinhas</a></li>
+                    <li><a href="/bolinhap">Bolinhas Psico</a></li>
+                </ul>
+                <h4>SOLID</h4>
+                <p>São 5 principios que ajudam no desenvolvimento de aplicações mais ricas, na <a href="https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">Wikipedia</a> tem uma previa sobre o assunto</p>
             </div>
         </div>
         <script src="script/estrutura.js"></script>
@@ -76,7 +85,6 @@
                     },
                     false);
             window.onkeydown = function (e) {
-                console.log(e.keyCode)
                 switch (e.keyCode) {
                     case 37:
                     case 39:
@@ -86,7 +94,7 @@
                         Processamento.movimentacaoCursor(direcao);
                         break;
                     case 32:
-                        stop();
+                        toggle();
                         break; // do not block other keys                    
                     default:
                         break; // do not block other keys
@@ -97,7 +105,7 @@
             window.onload = function () {
                 Cenario.definirMapa("myCanvas");
 //                Cenario.desenharLinhasMapa();
-                Processamento.iniciar(5,5);
+                Processamento.iniciar(5, 5);
                 Cenario.desenharLinhasMapa();
 
                 var time = null;
@@ -105,44 +113,83 @@
                     if (time == null) {
                         time = timestamp;
                     }
-                    
+
                     if (timestamp - time > Processamento.getVelocidade()) {
-                        Processamento.gerenciadorAnimacao();
-                        if(Processamento.perdeu){
+
+                        if (Processamento.perdeu) {
                             stop();
                             pontuacao();
+                            pedeInicio('Deseja jogar novamente?');
+                            return false;
+                        } else {
+                            Processamento.gerenciadorAnimacao();
                         }
                         time = timestamp;
                     }
                     requestId = window.requestAnimationFrame(gerenciadorAnimacao);
                 }
-                gerenciadorAnimacao();
-            }
+                //  Processamento.nome = prompt("Digite seu nome") || "Desconhecido perdedor!";
+                pedeInicio('Deseja jogar? utilize as teclas de setas para movimentar e barra de espaço para pausar');
 
-            function stop() {
-                if (requestId) {
-                    window.cancelAnimationFrame(requestId);
-                    requestId = undefined;
-                }else{
+            }
+            function pedeInicio(texto) {
+                if (confirm(texto)) {
+                    iniciou();
+                    Processamento.zerar();
+                    Processamento.iniciar(5, 5);
                     gerenciadorAnimacao();
                 }
             }
-            function pontuacao(){
-                ga('send', 'event', 'Cobrinha', 'perdeu', 'Segmento:'+Processamento.segmentos, {
-                  nonInteraction: true
+
+            function toggle() {
+                if (requestId != null) {
+                    window.cancelAnimationFrame(requestId);
+                    requestId = null;
+                } else {
+                    gerenciadorAnimacao();
+                }
+            }
+            function stop() {
+
+                window.cancelAnimationFrame(requestId);
+                requestId = null;
+
+            }
+            function pontuacao() {
+                //    ga('send', 'event', 'Cobrinha', 'segmento', Processamento.segmentos);
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Cobrinha',
+                    eventAction: 'perdeu',
+                    eventLabel: 'Segmentos',
+                    eventValue: Processamento.segmentos
+                });
+            }
+            function iniciou() {
+                //    ga('send', 'event', 'Cobrinha', 'segmento', Processamento.segmentos);
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'Cobrinha',
+                    eventAction: 'iniciou',
+                    eventLabel: 'Segmentos',
+                    eventValue: Processamento.segmentos
                 });
             }
 
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-          ga('create', 'UA-33585379-2', 'auto');
-          ga('send', {
-              hitType: 'pageview',
-              page: location.pathname
-            });
+            ga('create', 'UA-33585379-2', 'auto');
+            ga('send', 'pageview');
 
         </script>
     </body>

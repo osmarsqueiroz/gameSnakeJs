@@ -5,35 +5,29 @@
 }
 
 @font-face {
+    font-family: "banksb20";
+    src: url("../font/banksb20.ttf");
+}
+@font-face {
     font-family: "Andikat";
     src: url("../font/AndBasR.ttf");
 }
-@font-face {
-    font-family: "Oswald-Regular";
-    src: url("../font/Oswald-Regular.otf");
-}
-@font-face {
-    font-family: "Oswald-Stencil";
-    src: url("../font/Oswald-Stencil.otf");
-}
+
 @font-face {
     font-family: "banksia";
     src: url("../font/banksia.ttf");
     font-weight: normal;
 }
+
 @font-face {
-    font-family: "1942";
-    src: url("../font/1942.ttf");
+    font-family: "slkscre";
+    src: url("../font/slkscre.ttf");
     font-weight: normal;
 }
+
 @font-face {
-    font-family: "Kingthings_Calligraphica_Light";
-    src: url("../font/Kingthings_Calligraphica_Light.ttf");
-    font-weight: normal;
-}
-@font-face {
-    font-family: "UbuntuMono";
-    src: url("../font/UbuntuMono-R.ttf");
+    font-family: "armaliteRifle";
+    src: url("../font/armalite_rifle.ttf");
     font-weight: normal;
 }
 
